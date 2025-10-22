@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio Profesional</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .animation-stopped .shape,
+        .animation-stopped .aurora-layer {
+            animation: none !important;
+            opacity: 0.3;
+            transition: opacity 2s ease;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Traducciones simples y parada de animación
+        const translations = {
+            es: {
+                nav_home: 'Inicio',
+                nav_about: 'Sobre Mí',
+                nav_projects: 'Proyectos',
+                nav_skills: 'Habilidades',
+                nav_education: 'Formación',
+                nav_contact: 'Contacto',
+                hero_hello: '¡Hola! Soy',
+                hero_subtitle: 'Desarrollador Web Full Stack especializado en crear experiencias digitales atractivas y funcionales.',
+                btn_view_projects: 'Ver Proyectos',
+                btn_download_cv: 'Descargar CV',
+                about_title: 'Sobre Mí',
+                projects_title: 'Proyectos Principales',
+                skills_title: 'Habilidades Técnicas',
+                education_title: 'Formación Académica',
+                contact_title: 'Contacto',
+                contact_name: 'Nombre',
+                contact_email: 'Correo electrónico',
+                contact_subject: 'Asunto',
+                contact_message: 'Mensaje',
+                contact_send: 'Enviar Mensaje',
+                footer_rights: '© 2025 Vilomar Arellano - Todos los derechos reservados'
+            },
+            en: {
+                nav_home: 'Home',
+                nav_about: 'About Me',
+                nav_projects: 'Projects',
+                nav_skills: 'Skills',
+                nav_education: 'Education',
+                nav_contact: 'Contact',
+                hero_hello: "Hello! I'm",
+                hero_subtitle: 'Full Stack Web Developer specialized in building attractive and functional digital experiences.',
+                btn_view_projects: 'View Projects',
+                btn_download_cv: 'Download CV',
+                about_title: 'About Me',
+                projects_title: 'Featured Projects',
+                skills_title: 'Technical Skills',
+                education_title: 'Academic Education',
+                contact_title: 'Contact',
+                contact_name: 'Name',
+                contact_email: 'Email',
+                contact_subject: 'Subject',
+                contact_message: 'Message',
+                contact_send: 'Send Message',
+                footer_rights: '© 2025 Vilomar Arellano - All rights reserved'
+            },
+            fr: {
+                nav_home: 'Accueil',
+                nav_about: 'À propos de moi',
+                nav_projects: 'Projets',
+                nav_skills: 'Compétences',
+                nav_education: 'Formation',
+                nav_contact: 'Contact',
+                hero_hello: 'Bonjour! Je suis',
+                hero_subtitle: 'Développeur web Full Stack spécialisé dans la création d\'expériences numériques attrayantes et fonctionnelles.',
+                btn_view_projects: 'Voir les projets',
+                btn_download_cv: 'Télécharger le CV',
+                about_title: 'À propos de moi',
+                projects_title: 'Projets principaux',
+                skills_title: 'Compétences techniques',
+                education_title: 'Formation académique',
+                contact_title: 'Contact',
+                contact_name: 'Nom',
+                contact_email: 'E-mail',
+                contact_subject: 'Sujet',
+                contact_message: 'Message',
+                contact_send: 'Envoyer le message',
+                footer_rights: '© 2025 Vilomar Arellano - Tous droits réservés'
+            }
+        };
+
+        function setLanguage(lang) {
+            localStorage.setItem('lang', lang);
+            document.documentElement.setAttribute('lang', lang);
+            // activar botón actual
+            document.querySelectorAll('.language-switcher a').forEach(a => {
+                a.classList.toggle('active', a.dataset.lang === lang);
+            });
+            // textos
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+            // placeholders
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (translations[lang] && translations[lang][key]) {
+                    el.setAttribute('placeholder', translations[lang][key]);
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', function() {
+            // Parar animaciones tras 12s
+            setTimeout(function() {
+                document.querySelectorAll('.animated-background, .animated-aurora').forEach(function(el) {
+                    el.classList.add('animation-stopped');
+                });
+            }, 12000);
+
+            // Idioma inicial
+            const savedLang = localStorage.getItem('lang') || 'es';
+            setLanguage(savedLang);
+
+            // Eventos del selector
+            document.querySelectorAll('.language-switcher a').forEach(a => {
+                a.addEventListener('click', e => {
+                    e.preventDefault();
+                    const lang = a.dataset.lang;
+                    if (lang) setLanguage(lang);
+                });
+            });
+        });
+    </script>
+    <!-- Encabezado y Navegación -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <!-- Menú contextual para móviles -->
+                <div class="context-menu-container">
+                    <button class="context-menu-trigger" id="context-menu-trigger" aria-label="Menú de opciones">
+                        <span class="menu-text" data-i18n="menu_options">Menú</span>
+                        <svg class="dropdown-icon" width="12" height="8" viewBox="0 0 12 8" fill="none">
+                            <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    
+                    <div class="context-menu-dropdown" id="context-menu-dropdown">
+                        <div class="context-menu-item">
+                            <svg class="menu-icon" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M9 22V12H15V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <a href="#inicio" class="menu-link" data-i18n="nav_home">Inicio</a>
+                        </div>
+                        
+                        <div class="context-menu-item">
+                            <svg class="menu-icon" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <a href="#sobre-mi" class="menu-link" data-i18n="nav_about">Sobre Mí</a>
+                        </div>
+                        
+                        <div class="context-menu-item">
+                            <svg class="menu-icon" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="9" cy="9" r="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M21 15L16 10L5 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <a href="#proyectos" class="menu-link" data-i18n="nav_projects">Proyectos</a>
+                        </div>
+                        
+                        <div class="context-menu-item">
+                            <svg class="menu-icon" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                <path d="M21 16V8C20.9996 7.64928 20.9071 7.30481 20.7315 7.00116C20.556 6.69751 20.3037 6.44536 20 6.27L13 2.27C12.696 2.09446 12.3511 2.00205 12 2.00205C11.6489 2.00205 11.304 2.09446 11 2.27L4 6.27C3.69626 6.44536 3.44398 6.69751 3.26846 7.00116C3.09294 7.30481 3.00036 7.64928 3 8V16C3.00036 16.3507 3.09294 16.6952 3.26846 16.9988C3.44398 17.3025 3.69626 17.5546 4 17.73L11 21.73C11.304 21.9055 11.6489 21.9979 12 21.9979C12.3511 21.9979 12.696 21.9055 13 21.73L20 17.73C20.3037 17.5546 20.556 17.3025 20.7315 16.9988C20.9071 16.6952 20.9996 16.3507 21 16Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <polyline points="7.5,4.21 12,6.81 16.5,4.21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <polyline points="7.5,19.79 7.5,14.6 3,12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <polyline points="21,12 16.5,14.6 16.5,19.79" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <polyline points="12,22.08 12,16.91" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <a href="#habilidades" class="menu-link" data-i18n="nav_skills">Habilidades</a>
+                        </div>
+                        
+                        <div class="context-menu-item">
+                            <svg class="menu-icon" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <polyline points="10,9 9,9 8,9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <a href="docs/cv.pdf" class="menu-link" data-i18n="btn_download_cv" download>Descargar CV</a>
+                        </div>
+                        
+                        <div class="context-menu-item">
+                            <svg class="menu-icon" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <a href="#contacto" class="menu-link" data-i18n="nav_contact">Contacto</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <nav class="nav">
+                    <ul class="nav-menu" id="nav-menu">
+                        <li><a href="#inicio" class="nav-link" data-i18n="nav_home">Inicio</a></li>
+                        <li><a href="#sobre-mi" class="nav-link" data-i18n="nav_about">Sobre Mí</a></li>
+                        <li><a href="#habilidades" class="nav-link" data-i18n="nav_skills">Habilidades</a></li>
+                        <li><a href="#proyectos" class="nav-link" data-i18n="nav_projects">Proyectos</a></li>
+                        <li><a href="#formacion" class="nav-link" data-i18n="nav_education">Formación</a></li>
+                        <li><a href="#certificaciones" class="nav-link" data-i18n="nav_certifications">Certificaciones</a></li>
+                        <li><a href="#contacto" class="nav-link" data-i18n="nav_contact">Contacto</a></li>
+                    </ul>
+                </nav>
+                
+                <!-- Buscador -->
+                <div class="search-container">
+                    <div class="search-box">
+                        <input type="text" 
+                               id="search-input" 
+                               class="search-input" 
+                               placeholder="Buscar en el portfolio..." 
+                               data-i18n-placeholder="search_placeholder"
+                               autocomplete="off">
+                        <button class="search-button" id="search-button" aria-label="Buscar">
+                            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                                <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </button>
+                        <button class="search-clear" id="search-clear" aria-label="Limpiar búsqueda" style="display: none;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                                <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="2"/>
+                                <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <!-- Resultados de búsqueda -->
+                    <div class="search-results" id="search-results" style="display: none;">
+                        <div class="search-results-header">
+                            <span class="results-count" id="results-count">0 resultados</span>
+                        </div>
+                        <div class="search-results-list" id="search-results-list">
+                            <!-- Los resultados se generarán dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sección de Inicio -->
+    <section id="inicio" class="hero">
+
+        <div class="container">
+            <div class="hero-content">
+                <div class="profile-hero-image">
+                    <img src="imagenes/perfil.png" alt="Foto de Perfil Grande">
+                </div>
+                <h2><span data-i18n="hero_hello">¡Hola! Soy</span> <span>VILOMAR</span></h2>
+                <p data-i18n="hero_subtitle">Desarrollador Web Full Stack especializado en crear experiencias digitales atractivas y funcionales.</p>
+                <div class="hero-buttons">
+                    <a href="#proyectos" class="btn primary" data-i18n="btn_view_projects">Ver Proyectos</a>
+                    <a href="docs/cv.pdf" class="btn secondary" data-i18n="btn_download_cv" download>Descargar CV</a>
+                </div>
+                <div class="languages">
+                    <span class="language-tag">Español</span>
+                    <span class="language-tag">Inglés</span>
+                    <span class="language-tag">Francés</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Sobre Mí -->
+    <section id="sobre-mi" class="about">
+        <div class="container">
+            <h2 class="section-title" data-i18n="about_title">Sobre Mí</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Como estudiante de Ingeniería en Tecnologías de la Información, me encuentro en un emocionante viaje de aprendizaje y descubrimiento en el mundo del desarrollo web. Mi pasión por la programación comenzó desde mis primeros encuentros con el código, y desde entonces, he estado constantemente fascinado por cómo la tecnología puede transformar ideas en soluciones digitales impactantes.</p>
+                    <p>Durante mi formación académica, he desarrollado un profundo interés por el desarrollo web full-stack, explorando tanto el frontend como el backend. Me emociona especialmente la creación de interfaces interactivas y la implementación de funcionalidades que mejoren la experiencia del usuario. Cada proyecto es una oportunidad para aprender algo nuevo y mejorar mis habilidades.</p>
+                    <p>Mi objetivo es convertirme en un desarrollador web integral, combinando los conocimientos técnicos de mi carrera con mi pasión por la innovación y el diseño. Estoy constantemente aprendiendo nuevas tecnologías y metodologías, manteniéndome al día con las últimas tendencias en desarrollo web.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Sección de Habilidades -->
+    <section id="habilidades" class="skills">
+        <div class="container">
+            <h2 class="section-title" data-i18n="skills_title">Habilidades Técnicas</h2>
+            <div class="skills-container">
+                <!-- Categoría: Lenguajes de Programación -->
+                <div class="skill-category">
+                    <h3>Lenguajes de Programación</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <span class="skill-name">JavaScript</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 65%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Python</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 55%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">PHP</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 45%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Java</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 60%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+                
+                <!-- Categoría: Bases de Datos -->
+                <div class="skill-category">
+                    <h3>Bases de Datos</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <span class="skill-name">MySQL</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 70%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">MongoDB</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 50%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">PostgreSQL</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 40%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Categoría: Herramientas y Otros -->
+                <div class="skill-category">
+                    <h3>Herramientas y Otros</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <span class="skill-name">Git</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 65%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Docker</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 35%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">AWS</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 25%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Figma</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 55%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Formación -->
+    <section id="formacion" class="education">
+        <div class="container">
+            <h2 class="section-title" data-i18n="education_title">Formación Académica</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>Ingeniería en Tecnologías de la Información</h3>
+                        <h4>Universidad Politécnica de Sinaloa</h4>
+                        <p class="timeline-date">2025 - Actual</p>
+                        <p>Carrera enfocada en el desarrollo de soluciones tecnológicas innovadoras, abarcando programación, bases de datos, redes, ciberseguridad y gestión de proyectos de TI. Formación integral en tecnologías emergentes y metodologías ágiles para el desarrollo de software.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>Técnico en Mecatrónica</h3>
+                        <h4>Preparatoria CECyTEJalisco</h4>
+                        <p class="timeline-date">2020 - 2023</p>
+                        <p>Formación técnica integral en mecatrónica, combinando conocimientos de mecánica, electrónica, control automático y programación. Desarrollo de habilidades en automatización industrial, robótica, sistemas de control y mantenimiento de equipos automatizados.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Certificaciones -->
+    <section id="certificaciones" class="certifications">
+        <div class="container">
+            <h2 class="section-title">Certificaciones</h2>
+            <div class="certificates">
+                <div class="certificate-item">
+                    <img src="imagenes/certi1.jpg" alt="Certificación 1">
+                    <div class="certificate-info">
+                        <h3>Introducción a Cisco Packet Tracer</h3>
+                        <p>Cisco Networking Academy - 2024</p>
+                        <p class="cert-description">Curso principiante sobre simulación de redes. Familiarización con el entorno de simulación y configuración básica de dispositivos de red.</p>
+                    </div>
+                </div>
+                <div class="certificate-item">
+                    <img src="imagenes/certi2.jpg" alt="Certificación 2">
+                    <div class="certificate-info">
+                        <h3>CCNA: Redes Empresariales, Seguridad y Automatización</h3>
+                        <p>Universidad Politécnica de Sinaloa - 2025</p>
+                        <p class="cert-description">Curso intermedio dirigido por MC. Alejandro Pérez Pasten Borja. Enfoque en redes empresariales, protocolos de seguridad y automatización de redes.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Proyectos -->
+    <section id="proyectos" class="projects">
+        <div class="container">
+            <h2 class="section-title" data-i18n="projects_title">Proyectos</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="imagenes/hotel.jpg" alt="Sistema de Control y Administración Hotelera">
+                    </div>
+                    <div class="project-content">
+                        <h3>Sistema de Control y Administración Hotelera</h3>
+                        <p>Sistema integral para la gestión de hoteles que incluye reservas, check-in/check-out, administración de habitaciones y reportes financieros.</p>
+                        <a href="docs/hotel.pdf" class="project-btn" download>
+                            <i class="fas fa-download"></i> Descargar Documentación
+                        </a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="imagenes/movibuss.png" alt="App MoviBuss">
+                    </div>
+                    <div class="project-content">
+                        <h3>App MoviBuss</h3>
+                        <p>Aplicación móvil innovadora para el transporte público que permite el conteo automático de usuarios en tiempo real, eliminando la dependencia de tickets. Ofrece seguimiento de rutas en vivo, notificaciones de desvíos y optimización de tiempos de espera, mejorando significativamente la experiencia del usuario en el transporte urbano.</p>
+                        <a href="docs/MOVIBUSS.pdf" class="project-btn" download>
+                            <i class="fas fa-download"></i> Descargar Documentación
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Contacto -->
+    <section id="contacto" class="contact">
+        <div class="container">
+            <h2 class="section-title" data-i18n="contact_title">Contacto</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <h3>Email</h3>
+                        <p>2023030465@upsin.edu.mx</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <h3>Teléfono</h3>
+                        <p>+52 6691634781</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h3>Ubicación</h3>
+                        <p>Mazatlán, Sinaloa, México</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pie de Página -->
+    <footer>
+        <div class="container">
+            <p data-i18n="footer_rights">&copy; 2025 Vilomar Arellano - Todos los derechos reservados</p>
+            <div class="language-switcher">
+                <a href="#" class="active" data-lang="es">ES</a>
+                <a href="#" data-lang="en">EN</a>
+                <a href="#" data-lang="fr">FR</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+</body>
+</html>
